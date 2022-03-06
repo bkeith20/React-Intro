@@ -17,6 +17,10 @@ ol, ul {
   margin-bottom: 10px;
 }
 
+.current {
+	border: 1px solid red;
+}
+
 .square {
   background: #fff;
   border: 1px solid #999;
