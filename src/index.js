@@ -32,36 +32,33 @@ class Board extends React.Component {
 		/>);
 	}
 
-  render() {
-	return (
-	  <div>
-	  <div className="board-row">
-			<Label value='' />
-			<Label value='0' />
-			<Label value='1' />
-			<Label value='2' />
-		</div>
-		<div className="board-row">
-			<Label value='0' />
-			{this.renderSquare(0)}
-			{this.renderSquare(1)}
-			{this.renderSquare(2)}
-		</div>
-		<div className="board-row">
-			<Label value='1' />
-			{this.renderSquare(3)}
-			{this.renderSquare(4)}
-			{this.renderSquare(5)}
-		</div>
-		<div className="board-row">
-			<Label value='2' />
-			{this.renderSquare(6)}
-			{this.renderSquare(7)}
-			{this.renderSquare(8)}
-		</div>
-	  </div>
-	);
-  }
+	render() {
+		const num_rows = 3;
+		const num_cols = 3;
+		
+		var rows = [];
+		
+		//build the first row of labels
+		var labels = []
+		// build the first empty label
+		labels.push(<Label value='' />);
+		for(let x = 0; x < num_cols; x++){
+			labels.push(<Label value={x} />);
+		}
+		rows.push(React.createElement('div', {className: 'board-row'}, labels));
+		
+		//build the board
+		for(let y = 0; y < num_rows; y++){
+			let squares = [];
+			//add the label to the front of the row
+			squares.push(<Label value={y} />);
+			for(let x = 0; x < num_cols; x++){
+				squares.push(this.renderSquare((num_cols * y) + x));
+			}
+			rows.push(React.createElement('div', {className: 'board-row'}, squares));
+		}
+		return React.createElement('div', {}, rows);
+	}
 }
 
 class Game extends React.Component {
