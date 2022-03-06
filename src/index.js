@@ -13,6 +13,16 @@ function Square(props) {
 	);
 }
 
+function Label(props){
+	return (
+		<button 
+			className="label" 
+		>
+			{props.value}
+		</button>
+	);
+}
+
 class Board extends React.Component {
 	
 	renderSquare(i) {
@@ -25,20 +35,29 @@ class Board extends React.Component {
   render() {
 	return (
 	  <div>
-		<div className="board-row">
-		  {this.renderSquare(0)}
-		  {this.renderSquare(1)}
-		  {this.renderSquare(2)}
+	  <div className="board-row">
+			<Label value='' />
+			<Label value='0' />
+			<Label value='1' />
+			<Label value='2' />
 		</div>
 		<div className="board-row">
-		  {this.renderSquare(3)}
-		  {this.renderSquare(4)}
-		  {this.renderSquare(5)}
+			<Label value='0' />
+			{this.renderSquare(0)}
+			{this.renderSquare(1)}
+			{this.renderSquare(2)}
 		</div>
 		<div className="board-row">
-		  {this.renderSquare(6)}
-		  {this.renderSquare(7)}
-		  {this.renderSquare(8)}
+			<Label value='1' />
+			{this.renderSquare(3)}
+			{this.renderSquare(4)}
+			{this.renderSquare(5)}
+		</div>
+		<div className="board-row">
+			<Label value='2' />
+			{this.renderSquare(6)}
+			{this.renderSquare(7)}
+			{this.renderSquare(8)}
 		</div>
 	  </div>
 	);
@@ -51,6 +70,7 @@ class Game extends React.Component {
 		this.state = {
 			history: [{
 				squares: Array(9).fill(null),
+				selected: null
 			}],
 			stepNumber: 0,
 			xIsNext: true,
@@ -61,6 +81,7 @@ class Game extends React.Component {
 		const history = this.state.history.slice(0, this.state.stepNumber + 1);
 		const current = history[history.length - 1];
 		const squares = current.squares.slice();
+		//const selectedSpace = current.selected;
 		
 		// do nothing if the game has been won or the square is already clicked
 		if(calculateWinner(squares) || squares[i]){
@@ -72,6 +93,7 @@ class Game extends React.Component {
 		this.setState({
 			history: history.concat([{
 				squares: squares,
+				selected: i,
 			}]),
 			stepNumber: history.length,
 			xIsNext: !this.state.xIsNext,
@@ -92,7 +114,7 @@ class Game extends React.Component {
 		
 		const moves = history.map((step, move) => {
 			const desc = move ?
-				'Go to move #' + move :
+				'Go to move #' + move + ' ' + getSpceDesc(history[move].selected):
 				'Go to game start';
 			return (
 				<li key={move}>
@@ -147,6 +169,15 @@ function calculateWinner(squares) {
 	}
 	//no winner at this time
 	return null;
+}
+
+function getSpceDesc(space){
+	let column;
+	let row;
+	
+	row = (space < 3) ? 0 : ((space < 6) ? 1 : 2);
+	column = space - (row * 3);
+	return ('(' + row + ', ' + column + ')');
 }
 
 // ========================================
