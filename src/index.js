@@ -54,7 +54,7 @@ class Board extends React.Component {
 				let i = (num_cols * y) + x;
 				// generate a unique key for each square
 				let k = "square_" + i;
-				squares.push(<Square value={i} key={k} onClick={() => this.props.onClick(i)}/>);
+				squares.push(<Square value={this.props.squares[i]} key={k} onClick={() => this.props.onClick(i)}/>);
 			}
 			let rk = "row_" + (y+1);
 			rows.push(React.createElement('div', {className: 'board-row', key: rk}, squares));
