@@ -88,7 +88,7 @@ class Game extends React.Component {
 		//const selectedSpace = current.selected;
 		
 		// do nothing if the game has been won or the square is already clicked
-		if(calculateWinner(squares) || squares[i]){
+		if(calculateWinner(squares).winner || squares[i]){
 			return;
 		}
 		
@@ -136,8 +136,10 @@ class Game extends React.Component {
 		
 		//check for a winner
 		let status;
-		if(winResult) {
+		if(winResult.winner) {
 			status = 'Winner: ' + winResult.winner;
+		} else if(winResult.draw) {
+			status = "Game is a Draw!"
 		} else {
 			status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 		}
@@ -147,7 +149,7 @@ class Game extends React.Component {
 		  <div className="game">
 			<div className="game-board">
 			  <Board
-				winningLine={winResult ? winResult.line : null}
+				winningLine={winResult.line}
 				squares={current.squares}
 				onClick={(i) => this.handleClick(i)}
 			  />
@@ -179,14 +181,19 @@ function calculateWinner(squares) {
 		[0, 4, 8],
 		[2, 4, 6],
 	];
+	var draw = true;
 	for (let i = 0; i < lines.length; i++) {
 		const [a, b, c] = lines[i];
 		if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-			return {winner: squares[a], line: lines[i]};
+			return {winner: squares[a], line: lines[i], draw: false};
+		}
+		// if any squares are null then we must not have a draw
+		if(!(squares[a] && squares[b] && squares[c])){
+			draw = false;
 		}
 	}
 	//no winner at this time
-	return null;
+	return {winner: null, line: null, draw: draw};
 }
 
 function getSpceDesc(space){
