@@ -24,13 +24,6 @@ function Label(props){
 }
 
 class Board extends React.Component {
-	
-	renderSquare(i) {
-		return (<Square 
-			value={this.props.squares[i]} 
-			onClick={() => this.props.onClick(i)}
-		/>);
-	}
 
 	render() {
 		const num_rows = 3;
@@ -41,21 +34,30 @@ class Board extends React.Component {
 		//build the first row of labels
 		var labels = []
 		// build the first empty label
-		labels.push(<Label value='' />);
+		labels.push(<Label value='' key="label_xy" />);
 		for(let x = 0; x < num_cols; x++){
-			labels.push(<Label value={x} />);
+			// generate a unique key for each label
+			let k = "label_x" + x;
+			labels.push(<Label value={x} key={k}  />);
 		}
-		rows.push(React.createElement('div', {className: 'board-row'}, labels));
+		rows.push(React.createElement('div', {className: 'board-row', key: 'row_0'}, labels));
 		
 		//build the board
 		for(let y = 0; y < num_rows; y++){
 			let squares = [];
+			// generate a unique key for each label
+			let lk = "label_y" + y;
 			//add the label to the front of the row
-			squares.push(<Label value={y} />);
+			squares.push(<Label value={y} key={lk} />);
+			
 			for(let x = 0; x < num_cols; x++){
-				squares.push(this.renderSquare((num_cols * y) + x));
+				let i = (num_cols * y) + x;
+				// generate a unique key for each square
+				let k = "square_" + i;
+				squares.push(<Square value={i} key={k} onClick={() => this.props.onClick(i)}/>);
 			}
-			rows.push(React.createElement('div', {className: 'board-row'}, squares));
+			let rk = "row_" + (y+1);
+			rows.push(React.createElement('div', {className: 'board-row', key: rk}, squares));
 		}
 		return React.createElement('div', {}, rows);
 	}
