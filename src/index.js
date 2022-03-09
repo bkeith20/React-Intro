@@ -54,7 +54,7 @@ class Board extends React.Component {
 				let i = (num_cols * y) + x;
 				// generate a unique key for each square
 				let k = "square_" + i;
-				squares.push(<Square value={i} key={k} onClick={() => this.props.onClick(i)}/>);
+				squares.push(<Square value={this.props.squares[i]} key={k} onClick={() => this.props.onClick(i)}/>);
 			}
 			let rk = "row_" + (y+1);
 			rows.push(React.createElement('div', {className: 'board-row', key: rk}, squares));
@@ -73,6 +73,7 @@ class Game extends React.Component {
 			}],
 			stepNumber: 0,
 			xIsNext: true,
+			historySortAsc: true,
 		}
 	}
 	
@@ -106,32 +107,38 @@ class Game extends React.Component {
 		});
 	}
 	
+	toggleSort(){
+		this.setState({
+			historySortAsc: !this.state.historySortAsc
+		})
+	}
+	
 	render() {
 		const history = this.state.history;
 		const current = history[this.state.stepNumber];
 		const winner = calculateWinner(current.squares);
 		
-		const moves = history.map((step, move) => {
-			const desc = move ?
-				'Go to move #' + move + ' ' + getSpceDesc(history[move].selected):
+		//build our history list
+		var moves = Array(history.length);
+		for(let i = 0; i < history.length; i++){
+			//decide how history will be sorted
+			let moves_ndx =  this.state.historySortAsc ? i : (moves.length - 1 - i);
+			const desc = i ?
+				'Go to move #' + i + ' ' + getSpceDesc(history[i].selected):
 				'Go to game start';
-			const moveClass = this.state.stepNumber === move ? "current" : null;
-			return (
-				<li key={move}>
-				<button
-					onClick={() => this.jumpTo(move)}
-					className={moveClass}
-				>{desc}</button>
-				</li>
-			);
-		});
+			const moveClass = this.state.stepNumber === i ? "current" : null;
+			moves[moves_ndx] = (<li key={i}><button onClick={() => this.jumpTo(i)} className={moveClass}>{desc}</button></li>);
+		}
 		
+		//check for a winner
 		let status;
 		if(winner) {
 			status = 'Winner: ' + winner;
 		} else {
 			status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 		}
+		
+		let sortLabel = this.state.historySortAsc ? "Sort Desc." : "Sort Asc.";
 		return (
 		  <div className="game">
 			<div className="game-board">
@@ -142,6 +149,9 @@ class Game extends React.Component {
 			</div>
 			<div className="game-info">
 			  <div>{status}</div>
+			  <button onClick={() => this.toggleSort()}>
+				{sortLabel}
+			  </button>
 			  <ol>{moves}</ol>
 			</div>
 		  </div>
@@ -150,7 +160,7 @@ class Game extends React.Component {
 }
 
 function calculateWinner(squares) {
-	//all possible lines for winning
+	//all possible lines for winning given board numbered as following
 	// 		0  1  2
 	// 		3  4  5
 	// 		6  7  8
