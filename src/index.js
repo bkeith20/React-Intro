@@ -73,6 +73,7 @@ class Game extends React.Component {
 			}],
 			stepNumber: 0,
 			xIsNext: true,
+			historySortAsc: true,
 		}
 	}
 	
@@ -106,25 +107,41 @@ class Game extends React.Component {
 		});
 	}
 	
+	toggleSort(){
+		this.setState({
+			historySortAsc: !this.state.historySortAsc
+		})
+	}
+	
 	render() {
 		const history = this.state.history;
 		const current = history[this.state.stepNumber];
 		const winner = calculateWinner(current.squares);
 		
-		const moves = history.map((step, move) => {
-			const desc = move ?
-				'Go to move #' + move + ' ' + getSpceDesc(history[move].selected):
+		// const moves = history.map((step, move) => {
+			// const desc = move ?
+				// 'Go to move #' + move + ' ' + getSpceDesc(history[move].selected):
+				// 'Go to game start';
+			// const moveClass = this.state.stepNumber === move ? "current" : null;
+			// return (
+				// <li key={move}>
+				// <button
+					// onClick={() => this.jumpTo(move)}
+					// className={moveClass}
+				// >{desc}</button>
+				// </li>
+			// );
+		// });
+		
+		var moves = Array(history.length);
+		for(let i = 0; i < history.length; i++){
+			let moves_ndx =  this.state.historySortAsc ? i : (moves.length - 1 - i);
+			const desc = i ?
+				'Go to move #' + i + ' ' + getSpceDesc(history[i].selected):
 				'Go to game start';
-			const moveClass = this.state.stepNumber === move ? "current" : null;
-			return (
-				<li key={move}>
-				<button
-					onClick={() => this.jumpTo(move)}
-					className={moveClass}
-				>{desc}</button>
-				</li>
-			);
-		});
+			const moveClass = this.state.stepNumber === i ? "current" : null;
+			moves[moves_ndx] = (<li key={i}><button onClick={() => this.jumpTo(i)} className={moveClass}>{desc}</button></li>);
+		}
 		
 		let status;
 		if(winner) {
@@ -132,6 +149,8 @@ class Game extends React.Component {
 		} else {
 			status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 		}
+		
+		let sortLabel = this.state.historySortAsc ? "Sort Desc." : "Sort Asc.";
 		return (
 		  <div className="game">
 			<div className="game-board">
@@ -142,6 +161,9 @@ class Game extends React.Component {
 			</div>
 			<div className="game-info">
 			  <div>{status}</div>
+			  <button onClick={() => this.toggleSort()}>
+				{sortLabel}
+			  </button>
 			  <ol>{moves}</ol>
 			</div>
 		  </div>
