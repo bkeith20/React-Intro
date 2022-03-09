@@ -118,23 +118,10 @@ class Game extends React.Component {
 		const current = history[this.state.stepNumber];
 		const winner = calculateWinner(current.squares);
 		
-		// const moves = history.map((step, move) => {
-			// const desc = move ?
-				// 'Go to move #' + move + ' ' + getSpceDesc(history[move].selected):
-				// 'Go to game start';
-			// const moveClass = this.state.stepNumber === move ? "current" : null;
-			// return (
-				// <li key={move}>
-				// <button
-					// onClick={() => this.jumpTo(move)}
-					// className={moveClass}
-				// >{desc}</button>
-				// </li>
-			// );
-		// });
-		
+		//build our history list
 		var moves = Array(history.length);
 		for(let i = 0; i < history.length; i++){
+			//decide how history will be sorted
 			let moves_ndx =  this.state.historySortAsc ? i : (moves.length - 1 - i);
 			const desc = i ?
 				'Go to move #' + i + ' ' + getSpceDesc(history[i].selected):
@@ -143,6 +130,7 @@ class Game extends React.Component {
 			moves[moves_ndx] = (<li key={i}><button onClick={() => this.jumpTo(i)} className={moveClass}>{desc}</button></li>);
 		}
 		
+		//check for a winner
 		let status;
 		if(winner) {
 			status = 'Winner: ' + winner;
@@ -172,7 +160,7 @@ class Game extends React.Component {
 }
 
 function calculateWinner(squares) {
-	//all possible lines for winning
+	//all possible lines for winning given board numbered as following
 	// 		0  1  2
 	// 		3  4  5
 	// 		6  7  8
