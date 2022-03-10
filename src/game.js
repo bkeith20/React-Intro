@@ -6,6 +6,8 @@ import Col from 'react-bootstrap/Col';
 import Accordion from 'react-bootstrap/Accordion';
 import ListGroup from 'react-bootstrap/ListGroup';
 
+import './game.scss';
+
 function Square(props) {
 	let classes = props.highlight ? "square winning_square" : "square";
 	return (
@@ -153,6 +155,7 @@ class Game extends React.Component {
 		let sortLabel = this.state.historySortAsc ? "Sort Desc." : "Sort Asc.";
 		return (
 		  <Container fluid>
+			<Row id="status"><h3 >{status}</h3></Row>
 			<Row>
 				<Col sm={6} className="center-board">
 				  <Board
@@ -162,12 +165,11 @@ class Game extends React.Component {
 				  />
 				</Col>
 				<Col sm={6}>
-					<Row><h3 >{status}</h3></Row>
 					<Row>
 						<Accordion defaultActiveKey="0">
 							<Accordion.Item eventKey="0">
 								<Accordion.Header >Move History</Accordion.Header>
-								<Accordion.Body>
+								<Accordion.Body className="history_body">
 									<Row >
 										<Col xs={9}>
 											<ListGroup>{moves}</ListGroup>

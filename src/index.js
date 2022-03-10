@@ -6,7 +6,6 @@ import Navbar from 'react-bootstrap/Navbar';
 
 import {Game} from './game.js'
 
-import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Home extends React.Component{
