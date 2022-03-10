@@ -1,5 +1,10 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Accordion from 'react-bootstrap/Accordion';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 function Square(props) {
 	let classes = props.highlight ? "square winning_square" : "square";
@@ -129,8 +134,10 @@ class Game extends React.Component {
 			const desc = i ?
 				'Go to move #' + i + ' ' + getSpceDesc(history[i].selected):
 				'Go to game start';
-			const moveVariant = this.state.stepNumber === i ? "outline-primary" : "outline-dark";
-			moves[moves_ndx] = (<li key={i}><Button variant={moveVariant} size="sm" onClick={() => this.jumpTo(i)} >{desc}</Button></li>);
+			// const moveVariant = this.state.stepNumber === i ? "outline-primary" : "outline-dark";
+			// moves[moves_ndx] = (<li key={i}><Button variant={moveVariant} size="sm" onClick={() => this.jumpTo(i)} >{desc}</Button></li>);
+			const moveVariant = this.state.stepNumber === i ? "dark" : "light";
+			moves[moves_ndx] = (<ListGroup.Item key={i} variant={moveVariant} action onClick={() => this.jumpTo(i)}>{desc}</ListGroup.Item> );
 		}
 		
 		//check for a winner
@@ -145,25 +152,44 @@ class Game extends React.Component {
 		
 		let sortLabel = this.state.historySortAsc ? "Sort Desc." : "Sort Asc.";
 		return (
-		  <div className="game">
-			<div className="game-board">
-			  <Board
-				winningLine={winResult.line}
-				squares={current.squares}
-				onClick={(i) => this.handleClick(i)}
-			  />
-			</div>
-			<div className="game-info">
-			  <div>{status}</div>
-			  <Button  
-				  variant="outline-dark" 
-				  size="sm"
-				  onClick={() => this.toggleSort()}>
-				{sortLabel}
-			  </Button>
-			  <ol>{moves}</ol>
-			</div>
-		  </div>
+		  <Container fluid>
+			<Row>
+				<Col sm={6} className="center-board">
+				  <Board
+					winningLine={winResult.line}
+					squares={current.squares}
+					onClick={(i) => this.handleClick(i)}
+				  />
+				</Col>
+				<Col sm={6}>
+					<Row><h3 >{status}</h3></Row>
+					<Row>
+						<Accordion defaultActiveKey="0">
+							<Accordion.Item eventKey="0">
+								<Accordion.Header >Move History</Accordion.Header>
+								<Accordion.Body>
+									<Row >
+										<Col xs={9}>
+											<ListGroup>{moves}</ListGroup>
+										</Col>
+										<Col xs={3}>
+											<Button  
+												id="sort-toggle"
+											  variant="outline-dark" 
+											  className="float-btn-right"
+											  size="sm"
+											  onClick={() => this.toggleSort()}>
+												{sortLabel}
+											</Button>
+										</Col>
+									</Row>
+								</Accordion.Body>
+							</Accordion.Item>
+						</Accordion>
+					</Row>
+				</Col>
+			</Row>
+		  </Container>
 		);
 	}
 }
