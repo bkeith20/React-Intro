@@ -20,16 +20,6 @@ function Square(props) {
 	);
 }
 
-function Label(props){
-	return (
-		<button 
-			className="label" 
-		>
-			{props.value}
-		</button>
-	);
-}
-
 class Board extends React.Component {
 
 	render() {
@@ -48,13 +38,14 @@ class Board extends React.Component {
 				let i = (num_cols * y) + x;
 				//generate a unique key for each square
 				let k = "square_" + i;
+				let ck = "square_col_" + i;
 				let highlight = (winningLine && winningLine.includes(i));
-				squares.push(<Col className="square-col"><Square value={this.props.squares[i]} key={k} highlight={highlight} onClick={() => this.props.onClick(i)}/></Col>);
+				squares.push(<Col key={ck} className="square-col"><Square value={this.props.squares[i]} key={k} highlight={highlight} onClick={() => this.props.onClick(i)}/></Col>);
 			}
 			let rk = "row_" + (y);
-			rows.push(<Row className="square-row">{squares}</Row>);
+			rows.push(<Row key={rk} className="square-row">{squares}</Row>);
 		}
-		return (<Container className="board-container">{rows}</Container>);
+		return (<Container key="" className="board-container">{rows}</Container>);
 	}
 }
 
@@ -121,8 +112,6 @@ class Game extends React.Component {
 			const desc = i ?
 				'Go to move #' + i + ' ' + getSpceDesc(history[i].selected):
 				'Go to game start';
-			// const moveVariant = this.state.stepNumber === i ? "outline-primary" : "outline-dark";
-			// moves[moves_ndx] = (<li key={i}><Button variant={moveVariant} size="sm" onClick={() => this.jumpTo(i)} >{desc}</Button></li>);
 			const moveVariant = this.state.stepNumber === i ? "dark" : "light";
 			moves[moves_ndx] = (<ListGroup.Item key={i} variant={moveVariant} action onClick={() => this.jumpTo(i)}>{desc}</ListGroup.Item> );
 		}
