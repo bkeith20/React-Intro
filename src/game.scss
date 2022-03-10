@@ -1,0 +1,109 @@
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+#status{
+	text-align: center;
+	color: $dark;
+	margin-bottom: 20px
+}
+
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.navbar{
+	margin-bottom: 10px
+}
+
+.history_body{
+	height: 443px;
+	/* overflow-y: scroll; */
+}
+.accordion-button{
+	background-color: $dark !important;
+	color: $white !important;
+}
+.accordion-button.collapsed::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+.accordion-button:not(.collapsed)::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
+}
+.accordion-button:focus{
+	box-shadow: none !important;
+}
+
+#sort-toggle{
+	width: 80px;
+	float: right;
+}
+#sort-toggle:focus{
+	box-shadow: none;
+}
+
+.center-board{
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
+.board-container{
+	width: 300px !important;
+	margin: 0 auto !important;
+	padding: 0 !important;
+	
+	.square-row{
+		width: 300px !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		
+		.square-col{
+			margin: 0 !important;
+			padding: 0 !important;
+			width: 100px !important;
+			
+			.square {
+			  background: $white;
+			  border: 1px solid $dark;
+			  float: left;
+			  font-size: 48px;
+			  font-weight: bold;
+			  padding: 0;
+			  text-align: center;
+			  height: 100px;
+			  width: 100px;
+			}
+			
+			.square.winning_square {
+			  background: $green-200;
+			  border: 1px solid $dark;
+			  float: left;
+			  font-size: 48px;
+			  font-weight: bold;
+			  padding: 0;
+			  text-align: center;
+			  height: 100px;
+			  width: 100px;
+			}
+		}
+	}
+}
+
+.label{background: $white;
+  border: none;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 34px;
+}
+
+
+
