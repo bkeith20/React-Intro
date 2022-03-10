@@ -38,38 +38,23 @@ class Board extends React.Component {
 		
 		var rows = [];
 		
-		//build the first row of labels
-		var labels = []
-		// build the first empty label
-		labels.push(<Label value='' key="label_xy" />);
-		for(let x = 0; x < num_cols; x++){
-			// generate a unique key for each label
-			let k = "label_x" + x;
-			labels.push(<Label value={x} key={k}  />);
-		}
-		rows.push(React.createElement('div', {className: 'board-row', key: 'row_0'}, labels));
-		
 		const winningLine = this.props.winningLine;
 		
 		//build the board
 		for(let y = 0; y < num_rows; y++){
 			let squares = [];
-			// generate a unique key for each label
-			let lk = "label_y" + y;
-			//add the label to the front of the row
-			squares.push(<Label value={y} key={lk} />);
 			
 			for(let x = 0; x < num_cols; x++){
 				let i = (num_cols * y) + x;
-				// generate a unique key for each square
+				//generate a unique key for each square
 				let k = "square_" + i;
 				let highlight = (winningLine && winningLine.includes(i));
-				squares.push(<Square value={this.props.squares[i]} key={k} highlight={highlight} onClick={() => this.props.onClick(i)}/>);
+				squares.push(<Col className="square-col"><Square value={this.props.squares[i]} key={k} highlight={highlight} onClick={() => this.props.onClick(i)}/></Col>);
 			}
-			let rk = "row_" + (y+1);
-			rows.push(React.createElement('div', {className: 'board-row', key: rk}, squares));
+			let rk = "row_" + (y);
+			rows.push(<Row className="square-row">{squares}</Row>);
 		}
-		return React.createElement('div', {}, rows);
+		return (<Container className="board-container">{rows}</Container>);
 	}
 }
 
@@ -171,10 +156,10 @@ class Game extends React.Component {
 								<Accordion.Header >Move History</Accordion.Header>
 								<Accordion.Body className="history_body">
 									<Row >
-										<Col xs={9}>
+										<Col sm={9}>
 											<ListGroup>{moves}</ListGroup>
 										</Col>
-										<Col xs={3}>
+										<Col sm={3} className="d-none d-md-block">
 											<Button  
 												id="sort-toggle"
 											  variant="outline-dark" 
